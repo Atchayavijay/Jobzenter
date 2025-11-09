@@ -270,8 +270,8 @@
 @media (max-width: 991.98px) {
   .hero-section {
     min-height: auto;
-    margin-top: 0;
-    padding: 140px 0 100px;
+    margin-top: -130px;
+    padding: 100px 0 80px;
     background-color: transparent;
   }
 
@@ -387,29 +387,11 @@
 
 @media (max-width: 575.98px) {
   .hero-section {
-    margin-top: 0;
-    padding: 120px 0 80px;
-    
-    background-color: transparent;
-  }
-
-  .hero-content {
-    align-items: center;
-    text-align: center;
-  }
-
-  .hero-heading {
-    font-size: 38px;
-    line-height: 44px;
-  }
-
-  .hero-description {
-    font-size: 16px;
-    line-height: 24px;
+    padding: 90px 0 70px;
   }
 
   .hero-actions {
-    justify-content: center;
+    margin-top: 24px;
   }
 
   .hero-btn {
@@ -423,29 +405,34 @@
   }
 
   .hero-rocket {
+    margin-top: -20px;
     width: 200px;
     height: 200px;
-    top: 0;
-    left: 50%;
+    top: 10;
+    left: 12%;
     transform: translateX(-50%) rotate(2.35deg);
   }
 
   .hero-figure {
+    margin-top: -70px;
     width: 300px;
     top: 140px;
   }
 
   .hero-ellipse {
-    width: 80px;
+    margin-top: -70px;
+      width: 80px;
     height: 80px;
   }
 
   .hero-ellipse-top {
+    margin-top: -70px;
     top: 140px;
     right: 70px;
   }
 
   .hero-ellipse-bottom {
+    margin-top: -70px;
     bottom: -120px;
     left: -70px;
     top: 370px;

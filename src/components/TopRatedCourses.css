@@ -261,6 +261,8 @@
 
   .top-rated-controls {
     gap: 32px;
+    flex-direction: row;
+    justify-content: center;
   }
 }
 
@@ -292,8 +294,9 @@
   }
 
   .top-rated-controls {
-    flex-direction: column;
-    gap: 16px;
+    flex-direction: row;
+    gap: 24px;
+    justify-content: center;
   }
 }
 
