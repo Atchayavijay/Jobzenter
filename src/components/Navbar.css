@@ -136,9 +136,9 @@
   min-width: 220px;
   padding: 16px;
   background-color: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.12);
   border-radius: 12px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease, transform 0.2s ease;
@@ -189,10 +189,7 @@
 .navbar-custom .nav-link:focus-visible::after,
 .navbar-custom .nav-link-active::after {
   transform: scaleX(1);
-}
-
-.navbar-custom .nav-link-active::after {
-  background-color: #000000;
+  background-color: #fcf68a;
 }
 
 .social-icons {

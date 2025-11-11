@@ -137,9 +137,9 @@
 
 .course-card-btn:hover,
 .course-card-btn:focus {
-  background-color: #ffffff;
+  background-color: #f4ea17;
   color: #000000;
-  border: 1px solid #000000;
+  border: 1px solid #f4ea17;
 }
 
 .top-rated-controls {
