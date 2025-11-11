@@ -54,8 +54,23 @@
   z-index: 5;
 }
 
-.student-reviews-list {
+.student-reviews-view {
+  width: 100%;
+  overflow: hidden;
+}
+
+.student-reviews-track {
+  display: flex;
+  flex-direction: column;
   gap: 48px;
+  transition: transform 0.5s ease;
+}
+
+.student-reviews-slide {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
 }
 
 .student-review-card {
@@ -208,6 +223,7 @@
 @media (max-width: 991.98px) {
   .student-review-card {
     width: 100%;
+    max-width: 540px;
   }
 
   .student-review-card::after {
@@ -221,6 +237,12 @@
 
   .student-review-footer {
     padding-left: 140px;
+  }
+}
+
+@media (min-width: 992px) {
+  .student-reviews-slide {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
 

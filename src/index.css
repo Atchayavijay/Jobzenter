@@ -64,9 +64,9 @@ body {
   left: 0px;
   top: 50%;
   transform: translateY(-50%);
-  width: 110px;
-  height: 240px;
-  background: #FDF00159;
+  width: 140px;
+  height: 260px;
+  background: #fdf00159;
   border-radius: 0 90px 90px 0;
   transition: all 0.4s cubic-bezier(.4,0,.2,1);
   z-index: 1;

@@ -59,7 +59,7 @@
   line-height: 1;
   font-weight: 600;
   color: #111111;
-  margin-top: 4px;
+  margin-top: 0;
 }
 
 .faq-question {
@@ -70,8 +70,10 @@
 }
 
 .faq-toggle-icon {
-  width: 34px;
-  height: 34px;
+  width: 25px;
+  height: 25px;
+
+  margin-top: 15px;
   border-radius: 50%;
   background-color: #000000;
   box-shadow: 0 4px 14px rgba(20, 20, 20, 0.25);

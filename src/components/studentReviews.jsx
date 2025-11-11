@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { FaStar, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 import "./StudentReviews.css";
@@ -44,14 +44,46 @@ const reviews = [
 
 const StudentReviews = () => {
   const [index, setIndex] = useState(0);
+  const cardsPerView = 2;
+  const groups = useMemo(() => {
+    const chunks = [];
+    for (let i = 0; i < reviews.length; i += cardsPerView) {
+      chunks.push(reviews.slice(i, i + cardsPerView));
+    }
+    return chunks;
+  }, []);
+  const totalGroups = groups.length;
+  const slideRefs = useRef([]);
+  const [translateY, setTranslateY] = useState(0);
+  const [viewHeight, setViewHeight] = useState(null);
 
   const nextReviews = () => {
-    if (index + 2 < reviews.length) setIndex(index + 2);
+    if (index + 1 < totalGroups) setIndex(index + 1);
   };
 
   const prevReviews = () => {
-    if (index > 0) setIndex(index - 2);
+    if (index > 0) setIndex(index - 1);
   };
+
+  useEffect(() => {
+    const slide = slideRefs.current[index];
+    if (slide) {
+      setTranslateY(slide.offsetTop);
+      setViewHeight(slide.offsetHeight);
+    }
+  }, [index]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const slide = slideRefs.current[index];
+      if (slide) {
+        setTranslateY(slide.offsetTop);
+        setViewHeight(slide.offsetHeight);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [index]);
 
   return (
     <section className="student-reviews-section d-flex flex-column align-items-center bg-white">
@@ -72,54 +104,67 @@ const StudentReviews = () => {
         </button>
       )}
 
-      <div className="student-reviews-list d-flex flex-column align-items-center">
-        {reviews.slice(index, index + 2).map((r, i) => (
-          <div key={i} className="student-review-card">
-            <div className="student-review-surface ">
-              <div className="student-review-stars d-flex align-items-center">
-                {Array(5)
-                  .fill()
-                  .map((_, j) => (
-                    <FaStar key={j} />
-                  ))}
-              </div>
+      <div className="student-reviews-view" style={{ height: viewHeight ?? "auto" }}>
+        <div
+          className="student-reviews-track"
+          style={{ transform: `translateY(-${translateY}px)` }}
+        >
+          {groups.map((group, groupIndex) => (
+            <div
+              key={groupIndex}
+              className="student-reviews-slide"
+              ref={(el) => (slideRefs.current[groupIndex] = el)}
+            >
+              {group.map((r, i) => (
+                <div key={i} className="student-review-card">
+                  <div className="student-review-surface ">
+                    <div className="student-review-stars d-flex align-items-center">
+                      {Array(5)
+                        .fill()
+                        .map((_, j) => (
+                          <FaStar key={j} />
+                        ))}
+                    </div>
 
-              <p className="student-review-text">{r.text}</p>
+                    <p className="student-review-text">{r.text}</p>
 
-              <div className="student-review-footer">
-                <img
-                  src={r.img}
-                  alt={r.name}
-                  className="student-review-avatar"
-                />
+                    <div className="student-review-footer">
+                      <img
+                        src={r.img}
+                        alt={r.name}
+                        className="student-review-avatar"
+                      />
 
-                <div className="student-review-meta">
-                  <h4 className="student-review-name">{r.name}</h4>
-                  <p className="student-review-role">{r.role}</p>
-                  <div className="student-review-actions">
-                    <button
-                      type="button"
-                      className="student-review-action student-review-like"
-                      aria-label="Like review"
-                    >
-                      <FaThumbsUp />
-                    </button>
-                    <button
-                      type="button"
-                      className="student-review-action student-review-dislike"
-                      aria-label="Dislike review"
-                    >
-                      <FaThumbsDown />
-                    </button>
+                      <div className="student-review-meta">
+                        <h4 className="student-review-name">{r.name}</h4>
+                        <p className="student-review-role">{r.role}</p>
+                        <div className="student-review-actions">
+                          <button
+                            type="button"
+                            className="student-review-action student-review-like"
+                            aria-label="Like review"
+                          >
+                            <FaThumbsUp />
+                          </button>
+                          <button
+                            type="button"
+                            className="student-review-action student-review-dislike"
+                            aria-label="Dislike review"
+                          >
+                            <FaThumbsDown />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      {index + 2 < reviews.length && (
+      {index + 1 < totalGroups && (
         <button
           onClick={nextReviews}
           className="student-reviews-arrow student-reviews-arrow-down"

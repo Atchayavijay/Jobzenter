@@ -8,10 +8,10 @@
   width: 1400px;
   max-width: 100%;
   min-height: 718px;
-  border-radius: 91px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 91px 91px 0 0;
+  box-shadow: none;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(253, 240, 1, 0.45) 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #fdfbce 0%, #ffffff 100%);
   padding-bottom: 64px;
 }
 
@@ -36,10 +36,27 @@
 }
 
 .top-rated-cards {
+  display: none;
+}
+
+.top-rated-cards-view {
+  width: 100%;
+  overflow: hidden;
+  padding: 0 80px;
   margin-top: 28px;
-  padding: 0 140px;
+}
+
+.top-rated-cards-track {
+  display: flex;
   gap: 90px;
-  flex-wrap: nowrap;
+  transition: transform 0.5s ease;
+}
+
+.top-rated-slide {
+  display: flex;
+  gap: 90px;
+  flex: 0 0 100%;
+  justify-content: center;
 }
 
 .course-card {
@@ -47,7 +64,8 @@
   height: 400px;
   background-color: #ffffff;
   border-radius: 18px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border: 1px solid #dcdcdc;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
@@ -79,15 +97,15 @@
   position: relative;
   z-index: 2;
   height: 190px;
-  padding-top: 10px;
-  margin-bottom: 18px;
+  padding-top: 16px;
+  margin-bottom: 22px;
   display: flex;
   justify-content: center;
 }
 
 .course-card-thumbnail {
-  width: 280px;
-  height: 200px;
+  width: 300px;
+  height: 190px;
   object-fit: cover;
   border-radius: 14px;
 }
@@ -97,6 +115,8 @@
   z-index: 2;
   padding: 28px 18px 18px;
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .course-card-title {
@@ -119,7 +139,7 @@
 }
 
 .course-card-button-wrapper {
-  margin-top: 20px;
+  margin-top: auto;
 }
 
 .course-card-btn {
@@ -223,6 +243,29 @@
   }
 }
 
+@media (max-width: 1199.98px) {
+  .top-rated-container {
+    width: calc(100% - 48px);
+  }
+
+  .top-rated-header {
+    padding: 36px 80px 0;
+  }
+
+  .top-rated-cards {
+    padding: 0 80px;
+    gap: 48px;
+  }
+
+  .top-rated-cards-view {
+    padding: 0 80px;
+  }
+
+  .top-rated-slide {
+    gap: 48px;
+  }
+}
+
 @media (max-width: 991.98px) {
   .top-rated-section {
     padding: 60px 0;
@@ -246,6 +289,19 @@
     padding: 0 32px;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  .top-rated-cards-view {
+    padding: 0 32px;
+  }
+
+  .top-rated-cards-track {
+    gap: 32px;
+  }
+
+  .top-rated-slide {
+    display: grid;
+    gap: 32px;
   }
 
   .top-rated-controls {

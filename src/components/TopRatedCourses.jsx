@@ -1,10 +1,13 @@
 
 // export default TopRatedCourses;
-import React, { useState } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import "./TopRatedCourses.css";
 
 const TopRatedCourses = () => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [translateX, setTranslateX] = useState(0);
+  const [viewWidth, setViewWidth] = useState(null);
+  const slideRefs = useRef([]);
 
   const courses = [
     {
@@ -100,9 +103,14 @@ const TopRatedCourses = () => {
   ];
 
   const cardsPerPage = 3;
-  const totalPages = Math.ceil(courses.length / cardsPerPage);
-  const startIndex = currentPage * cardsPerPage;
-  const visibleCourses = courses.slice(startIndex, startIndex + cardsPerPage);
+  const groups = useMemo(() => {
+    const chunks = [];
+    for (let i = 0; i < courses.length; i += cardsPerPage) {
+      chunks.push(courses.slice(i, i + cardsPerPage));
+    }
+    return chunks;
+  }, [courses]);
+  const totalPages = groups.length;
 
   const handlePrevious = () => {
     if (currentPage > 0) {
@@ -119,6 +127,26 @@ const TopRatedCourses = () => {
   const isFirstPage = currentPage === 0;
   const isLastPage = currentPage === totalPages - 1;
 
+  useEffect(() => {
+    const slide = slideRefs.current[currentPage];
+    if (slide) {
+      setTranslateX(slide.offsetLeft);
+      setViewWidth(slide.offsetWidth);
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const slide = slideRefs.current[currentPage];
+      if (slide) {
+        setTranslateX(slide.offsetLeft);
+        setViewWidth(slide.offsetWidth);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [currentPage]);
+
   return (
     <section className="top-rated-section d-flex justify-content-center">
       <div className="top-rated-container position-relative">
@@ -129,35 +157,48 @@ const TopRatedCourses = () => {
           </p>
         </div>
 
-        <div className="top-rated-cards d-flex justify-content-center">
-          {visibleCourses.map((course) => (
-            <div key={course.id} className="course-card position-relative">
-              <div className="course-card-image d-flex align-items-start justify-content-center">
-                <img
-                  src={course.image}
-                  alt={course.title}
-                  className="course-card-thumbnail img-fluid"
-                />
+        <div className="top-rated-cards-view">
+          <div
+            className="top-rated-cards-track"
+            style={{ transform: `translateX(-${translateX}px)` }}
+          >
+            {groups.map((group, groupIndex) => (
+              <div
+                key={groupIndex}
+                className="top-rated-slide"
+                ref={(el) => (slideRefs.current[groupIndex] = el)}
+              >
+                {group.map((course) => (
+                  <div key={course.id} className="course-card position-relative">
+                    <div className="course-card-image d-flex align-items-start justify-content-center">
+                      <img
+                        src={course.image}
+                        alt={course.title}
+                        className="course-card-thumbnail img-fluid"
+                      />
+                    </div>
+                    <div className="course-card-content">
+                      <h3 className="course-card-title">{course.title}</h3>
+                      <p className="course-card-description">{course.description}</p>
+                      <div className="course-card-stars d-flex alignments-center">
+                        {course.stars.map((star, starIndex) => (
+                          <img key={starIndex} src={star} alt="star" />
+                        ))}
+                      </div>
+                      <div className="course-card-button-wrapper d-flex justify-content-center">
+                        <button className="course-card-btn" style={course.buttonStyle}>
+                          Download Brochure
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="course-card-content">
-                <h3 className="course-card-title">{course.title}</h3>
-                <p className="course-card-description">{course.description}</p>
-                <div className="course-card-stars d-flex align-items-center">
-                  {course.stars.map((star, starIndex) => (
-                    <img key={starIndex} src={star} alt="star" />
-                  ))}
-                </div>
-                <div className="course-card-button-wrapper d-flex justify-content-center">
-                  <button className="course-card-btn" style={course.buttonStyle}>
-                    Download Brochure
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <div className="top-rated-controls d-flex align-items-center justify-content-center">
+        <div className="top-rated-controls d-flex alignments-center justify-content-center">
           <button
             onClick={handlePrevious}
             disabled={isFirstPage}
@@ -172,7 +213,7 @@ const TopRatedCourses = () => {
           </button>
 
           <div className="top-rated-dots d-flex align-items-center">
-            {Array.from({ length: totalPages }).map((_, index) => (
+            {groups.map((_, index) => (
               <button
                 key={index}
                 type="button"

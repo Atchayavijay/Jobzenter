@@ -42,21 +42,21 @@ export default function FaqSection() {
                 key={index}
                 className={`faq-card bg-white ${active ? "active" : ""}`}
               >
-                <button
-                  onClick={() => setOpen(active ? null : index)}
-                  className="faq-toggle d-flex align-items-start"
-                  aria-expanded={active}
-                >
+                <div className="faq-toggle d-flex align-items-start">
                   <span className="faq-toggle-plus">+</span>
-                  <span className="faq-question flex-grow-1">
-                    {item.q}
-                  </span>
-                  <span className="faq-toggle-icon d-flex align-items-center justify-content-center">
+                  <span className="faq-question flex-grow-1">{item.q}</span>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(active ? null : index)}
+                    className="faq-toggle-icon d-flex align-items-center justify-content-center"
+                    aria-expanded={active}
+                    aria-label={active ? "Collapse question" : "Expand question"}
+                  >
                     <span className="faq-toggle-icon-inner">
                       {active ? "−" : "+"}
                     </span>
-                  </span>
-                </button>
+                  </button>
+                </div>
 
                 <div className={`faq-answer ${active ? "show" : ""}`}>
                   <p>{item.a}</p>
